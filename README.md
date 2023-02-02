@@ -519,7 +519,6 @@ export default C.make({
 ## Dépendances
 
 ```
-javascript
 - @babel/polyfill
 
 - @vue/babel-helper-vue-jsx-merge-props
