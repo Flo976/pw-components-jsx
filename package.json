@@ -1,0 +1,25 @@
+{
+  "name": "pw-components-jsx-dev",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist && babel src --out-dir dist --copy-files"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.4.0",
+    "@vue/babel-preset-jsx": "^1.4.0",
+    "classnames": "^2.3.2",
+    "core-js": "^3.23.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2"
+  }
+}
