@@ -1,6 +1,6 @@
 {
   "name": "pw-components-jsx-dev",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.js",

@@ -1,5 +1,5 @@
-import Accordion from "./Accordion/Accordion.jsx";
-import AccordionObject from "./Accordion/AccordionObject.js";
+import Accordion from "./Accordion/Accordion";
+import AccordionObject from "./Accordion/AccordionObject";
 
 import Datatable from "./Datatable/Datatable";
 import DatatableObject from "./Datatable/DatatableObject";
