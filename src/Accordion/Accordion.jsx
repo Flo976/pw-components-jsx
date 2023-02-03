@@ -7,7 +7,7 @@ class Accordion {
 			drawAccordion(accordion = {}){
 				var {
 					cards = [],
-					functions = [],
+					functions = {},
 				} = accordion;
 
 				var {
