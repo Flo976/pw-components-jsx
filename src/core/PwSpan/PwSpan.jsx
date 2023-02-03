@@ -1,4 +1,4 @@
-import { C } from "vue/helper/V02Component.jsx";
+import { C } from "vue/helper/V02Component";
 import styles from "./PwSpan.scss?module";
 import classNames from "classnames";
 import { getData } from "pw-components-core-dev";

@@ -2,7 +2,7 @@ import { C } from "../../vue/helper/V02Component";
 import styles from "./PwTable.scss?module";
 import classNames from "classnames";
 import { getData } from "pw-components-core-dev";
-import PwLoading from "../PwLoading/PwLoading.jsx";
+import PwLoading from "../PwLoading/PwLoading";
 
 export default C.make({
 	getData() {

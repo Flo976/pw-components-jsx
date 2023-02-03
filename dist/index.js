@@ -195,6 +195,7 @@ Object.defineProperty(exports, "determinePagination", {
     return _determinePagination.determinePagination;
   }
 });
+require("./functions/initJquery");
 var _Datatable = _interopRequireDefault(require("./Datatable/Datatable"));
 var _DatatableObject = _interopRequireDefault(require("./Datatable/DatatableObject"));
 var _determinePagination = require("./Datatable/determinePagination");

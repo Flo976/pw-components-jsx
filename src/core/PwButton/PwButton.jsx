@@ -20,8 +20,10 @@ export default C.make({
 				$refs: { element },
 			} = this;
 
-			$(element).tooltip("dispose");
-			$(element).tooltip();
+			if ($(element).tooltip) {
+				$(element).tooltip("dispose");
+				$(element).tooltip();
+			}
 		}, 100);
 
 		return (

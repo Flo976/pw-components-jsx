@@ -2,6 +2,9 @@ import { C } from "../../vue/helper/V02Component";
 import style from "./PwSelect.scss?modules";
 import classNames from "classnames";
 
+import "select2/dist/css/select2.min.css";
+import "select2/dist/js/select2.min.js";
+
 export default C.make({
 
 	initSelect2() {
