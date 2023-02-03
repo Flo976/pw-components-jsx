@@ -16,7 +16,7 @@ class Accordion {
         const h = this.$createElement;
         var {
           cards = [],
-          functions = []
+          functions = {}
         } = accordion;
         var {
           renderHead,
