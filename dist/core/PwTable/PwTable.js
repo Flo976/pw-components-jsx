@@ -9,7 +9,7 @@ var _V02Component = require("../../vue/helper/V02Component");
 var _PwTable = _interopRequireDefault(require("./PwTable.scss?module"));
 var _classnames = _interopRequireDefault(require("classnames"));
 var _pwComponentsCoreDev = require("pw-components-core-dev");
-var _PwLoading = _interopRequireDefault(require("../PwLoading/PwLoading.jsx"));
+var _PwLoading = _interopRequireDefault(require("../PwLoading/PwLoading"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var _default = _V02Component.C.make({
   getData() {

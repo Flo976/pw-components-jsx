@@ -1,6 +1,6 @@
 {
   "name": "pw-components-jsx-dev",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -21,8 +21,10 @@
     "core-js": "^3.23.5",
     "dropzone": "^6.0.0-beta.2",
     "inputmask": "^5.0.7",
+    "jquery": "^3.5.1",
     "moment": "^2.29.4",
     "pw-components-core-dev": "0.0.4",
+    "select2": "^4.1.0-rc.0",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.6",
     "vue-template-compiler": "^2.6.12"

@@ -31,8 +31,10 @@ var _default = _V02Component.C.make({
           element
         }
       } = this;
-      $(element).tooltip("dispose");
-      $(element).tooltip();
+      if ($(element).tooltip) {
+        $(element).tooltip("dispose");
+        $(element).tooltip();
+      }
     }, 100);
     return h(Tag, (0, _babelHelperVueJsxMergeProps.default)([{
       "ref": "element",

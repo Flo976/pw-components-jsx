@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _V02Component = require("vue/helper/V02Component.jsx");
+var _V02Component = require("vue/helper/V02Component");
 var _PwSpan = _interopRequireDefault(require("./PwSpan.scss?module"));
 var _classnames = _interopRequireDefault(require("classnames"));
 var _pwComponentsCoreDev = require("pw-components-core-dev");
