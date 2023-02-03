@@ -1,0 +1,42 @@
+:global {
+	.table > thead > tr > th {
+		padding: 10px 21px 10px 21px;
+	}
+
+	.table thead .sorting {
+		position: relative;
+		cursor: pointer;
+	}
+
+	.table thead .sorting::before,
+	.table thead .sorting::after {
+		position: absolute;
+		bottom: 0.9em;
+		display: block;
+		opacity: 0.4;
+		color: #d3d3d3;
+		content: "";
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: 12px;
+		width: 14px;
+		height: 14px;
+		content: "";
+		right: 0.3rem;
+	}
+	
+	.table thead .sorting::before {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b3f5c' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-up'%3E%3Cpolyline points='18 15 12 9 6 15'%3E%3C/polyline%3E%3C/svg%3E");
+		top: 0.5rem;
+	}
+
+	.table thead .sorting::after {
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b3f5c' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' class='feather feather-chevron-down'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+		top: 1.3rem;
+	}
+
+	.table thead .sorting.sorting_asc::before,
+	.table thead .sorting.sorting_desc::after {
+		opacity: 1;
+	}
+}

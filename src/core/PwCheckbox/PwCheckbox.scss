@@ -1,0 +1,53 @@
+:global {
+	.field_checkbox {
+		position: relative;
+		margin: 0;
+		display: inline-flex;
+		cursor: pointer;
+
+		& > input[type="checkbox"] {
+			display: none;
+
+			&:checked {
+				& + .checkbox_indicator {
+					&::after {
+						transform: rotate(-33deg) scale(1);
+					}
+				}
+			}
+		}
+
+		& > .checkbox_indicator {
+			position: relative;
+			display: block;
+			border-radius: 2px;
+			width: 22px;
+			height: 22px;
+			min-width: 22px;
+			min-height: 22px;
+			border: #ec6608 solid 1px;
+
+			&::after {
+				content: "";
+				position: absolute;
+				width: 25px;
+				height: 10px;
+				border: #ec6608 solid 2px;
+				border-top: none;
+				border-right: none;
+				transform: rotate(-33deg) scale(0);
+				top: 0;
+				left: 2px;
+				transition: all 0.3s ease-in-out;
+			}
+		}
+
+		& > .checkbox_label {
+			position: relative;
+			font-size: 15px;
+			font-family: Raleway Medium;
+			color: #000;
+			margin: auto 0 auto 10px;
+		}
+	}
+}

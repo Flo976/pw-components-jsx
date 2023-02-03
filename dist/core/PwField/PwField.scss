@@ -1,0 +1,13 @@
+:global {
+	.feedback_error {
+		color: #dc3545;
+		display:block;
+	}
+	.field_error {
+		.pw_input,
+		.field_pwd .pw_input,
+		.pw_textarea {
+			border-color: #dc3545;
+		}
+	}
+}

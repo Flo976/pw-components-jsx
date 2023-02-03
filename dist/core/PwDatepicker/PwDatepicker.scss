@@ -1,0 +1,20 @@
+:global {
+    .pw_datepicker {
+        position: relative;
+
+        .icon {
+            position: absolute;
+            right: 4px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            top: 2px;
+            cursor: pointer;
+
+            * {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+    }
+}

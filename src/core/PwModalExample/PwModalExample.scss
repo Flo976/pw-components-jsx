@@ -1,0 +1,43 @@
+ @keyframes :global(pw_loading_animation) {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+:global {
+    .pw_loading_overlay {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+    }
+
+    .pw_loading {
+        display: inline-block;
+        margin: auto;
+        width: 40px;
+        height: 40px;
+        vertical-align: -2px;
+        border-radius: 50%;
+        animation: 0.75s linear infinite pw_loading_animation;
+        border: 3px solid #ec6608;
+        border-color: #ec6608;
+        border-right-color: transparent;
+    }
+
+    .pw_loading_base {
+        display: inline-block;
+        text-align: center;
+        margin: auto;
+        width: 40px;
+        height: 40px;
+        animation: 0.75s linear infinite pw_loading_animation;
+    }
+    .pw_loading_not_animate{
+        animation: initial;
+    }
+
+}
