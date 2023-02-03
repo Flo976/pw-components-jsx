@@ -207,11 +207,17 @@ export default LIST_USER_TABLE;
 ```
 ###### Utilisation datatable sur le composant
 
+* Avec recherche
+* Avec filtrage
+* Avec Ajout
+
 ```javascript
 import { C } from "vue/helper/V01Component.jsx";
 import classNames from "classnames";
 import Components from "common/classes/Components.jsx";
 import LIST_USER_TABLE from "common/structure/TABLE/LIST_USER_TABLE.jsx";
+import MODAL_USER_FILTER from "common/structure/TABLE/modal/MODAL_USER_FILTER.jsx";
+import MODAL_CREATE_USER from "common/structure/TABLE/modal/MODAL_CREATE_USER.jsx";
 
 import PwLoading from "vue/components/core/PwLoading/PwLoading.jsx";
 
@@ -221,10 +227,74 @@ export default C.make({
     $render() {
         var datatable = this.setupTable();
 
+        var {
+    		fieldFilter,
+		    fieldCreate,
+		    buttonCreate
+		    search,
+		} = this.config;
+
+		search.onSearch = (params = {}) => {
+		    var { value } = params;
+		    datatable.activePage = 1;
+		    datatable.key = value;
+		    datatable.load();
+		};
+
+		var openModalFilter = () => {
+		    var modal = showModal(MODAL_USER_FILTER, {
+		        fieldFilter,
+		        datatable,
+		    });
+		};
+		var resetFilters = () => {
+			datatable.activePage = 1;
+			datatable.filters = "";
+			datatable.load();
+		 };
+
+		var openModalAjouter = () => {
+		    var modal = showModal(MODAL_CREATE_USER, {
+		        fieldCreate,
+		        buttonCreate,
+		    });
+		};
+
+		var renderButtonFilter = () => {
+		    var reset = () =>{
+		        if (datatable.filters && datatable.filters.length) {
+		            return (
+		                <button class="btn btn-secondary" onClick={resetFilters}>
+		                    Annuler les filtres
+		                </button>
+		            );
+		        }
+		        return null;
+		    }
+		    return (
+		        <span>
+		            <button class="btn btn-primary" onClick={openModalFilter}>
+		                Filter
+		            </button>
+		            {reset()}
+		        </span>
+		    );
+		};
+
         return (
             <div class={classNames("")}>
                 <div class="p-3">
                     <div class="row">
+                    	<div class="col-9">
+						    <span
+						        class="btn btn-primary"
+						        onClick={openModalAjouter}
+						    >
+						        Ajouter
+						    </span>
+						    {renderButtonFilter()}
+						</div>
+                        <div class="col-3">{this.$search(search)}</div>
                         <div class="col-12">
                             <div class="position-relative">
                                 {this.drawTable(datatable)}
@@ -245,72 +315,22 @@ export default C.make({
 });
 ```
 
-
-###### Utilisation de recherche sur datatable
-
-```javascript
-var {
-    search,
-} = this.config;
-
-search.onSearch = (params = {}) => {
-    var { value } = params;
-    datatable.activePage = 1;
-    datatable.key = value;
-    datatable.load();
-};
-
-<div class="col-3">{this.$search(search)}</div>
-```
-
-
-###### Utilisation de filtrage sur datatable
+`common/functions/modal/modalFunction.js`
 
 ```javascript
-import MODAL_USER_FILTER from "common/structure/TABLE/modal/MODAL_USER_FILTER.jsx";
+import { setChildView } from "vue/helper/renderVue";
 
-var {
-    fieldFilter,
-} = this.config;
+function showModal(component, config) {
+	var { onShow=() => {}} = config
+	setChildView("#app_modal_wrapper", component, config);
+	config.instance.$$$show();
+	onShow(config.instance)
+	return config.instance;
+}
 
-var datatable = this.setupTable();
-        
-var openModalFilter = () => {
-    var modal = showModal(MODAL_USER_FILTER, {
-        fieldFilter,
-        datatable,
-    });
-};
-var resetFilters = () => {
-      datatable.activePage = 1;
-      datatable.filters = "";
-      datatable.load();
-  };
-
-var renderButtonFilter = () => {
-    var reset = () =>{
-        if (datatable.filters && datatable.filters.length) {
-            return (
-                <button class="btn btn-secondary" onClick={resetFilters}>
-                    Annuler les filtres
-                </button>
-            );
-        }
-        return null;
-    }
-    return (
-        <span>
-            <button class="btn btn-primary" onClick={openModalFilter}>
-                Filter
-            </button>
-            {reset()}
-        </span>
-    );
-};
-
-<div class="col-9">
-    {renderButtonFilter()}
-</div>
+export {
+	showModal
+}
 ```
 
 ###### Modal de filtrage
@@ -426,35 +446,6 @@ export default C.make({
 });
 ```
 
-
-###### Utilisation modal d’ajout sur datatable
-
-```javascript
-import MODAL_CREATE_USER from "common/structure/TABLE/modal/MODAL_CREATE_USER.jsx";
-
-var {
-    fieldCreate,
-    buttonCreate
-} = this.config;
-
-var datatable = this.setupTable();
-
-var openModalAjouter = () => {
-    var modal = showModal(MODAL_CREATE_USER, {
-        fieldCreate,
-        buttonCreate,
-    });
-};
-
-<div class="col-9">
-    <span
-        class="btn btn-primary"
-        onClick={openModalAjouter}
-    >
-        Ajouter
-    </span>
-</div>
-```
 ###### Modal d’ajout
 
 ```javascript
