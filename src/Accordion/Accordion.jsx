@@ -2,10 +2,21 @@ import classNames from "classnames";
 import Style from "./Accordion.scss?module";
 
 class Accordion {
+	static saveFunctions(accordion = {}, functions = {}){
+		if(accordion.functions && !accordion.savedFunc){
+			accordion.savedFunc = true;
+			accordion.functions = {
+				...accordion.functions,
+				...functions
+			}
+		}
+	};
+
     static getMethods() {
 		return {
 			drawAccordion(accordion = {}){
 				var {
+					id,
 					cards = [],
 					functions = {},
 				} = accordion;
@@ -46,7 +57,7 @@ class Accordion {
 	
 						return (
 							<div class="card-header" id={head_id}>
-								<a href="#" class="btn btn-link" data-toggle="collapse" data-target={`#${content_id}`} aria-expanded="true" aria-controls={content_id}>
+								<a href="#" class="btn btn-link" data-toggle="collapse" data-target={`#${content_id}`} aria-controls={content_id}>
 									{renderLocal()}
 								</a>
 							</div>
@@ -122,9 +133,11 @@ class Accordion {
 
 				if(!render || (typeof render != "function")){
 					render = (params = {}) => {
-						var {cards = []} = params
-	
-						var accordion_id = `accordion-${Date.now()}`;
+						var {accordion_id, cards = []} = params
+
+						if(!accordion_id || !accordion_id.length){
+							accordion_id = `accordion-${Date.now()}`;
+						}
 	
 						var cards = cards.map((card, i) => {
 							params = {
@@ -144,7 +157,14 @@ class Accordion {
 					}
 				}
 
-				return render({cards});
+				Accordion.saveFunctions(accordion, {
+					renderHead,
+					renderContent,
+					renderCard,
+					render,
+				})
+
+				return render({accordion_id: id, cards});
 			}
 		}
     }
