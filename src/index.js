@@ -1,7 +1,14 @@
 import "./functions/initJquery";
+import Accordion from "./Accordion/Accordion";
+import AccordionObject from "./Accordion/AccordionObject";
+
+import DragAndDrop from "./DragAndDrop/DragAndDrop";
+import DragAndDropObject from "./DragAndDrop/DragAndDropObject";
+
 import Datatable from "./Datatable/Datatable";
 import DatatableObject from "./Datatable/DatatableObject";
 import {determinePagination} from "./Datatable/determinePagination";
+
 import PwAlert from "./core/PwAlert/PwAlert";
 import PwButton from "./core/PwButton/PwButton";
 import PwChart from "./core/PwChart/PwChart";
@@ -34,9 +41,16 @@ import PwTableDescription from "./core/PwTableDescription/PwTableDescription";
 import PwTextarea from "./core/PwTextarea/PwTextarea";
 
 export {
+	Accordion,
+    AccordionObject,
+
+	DragAndDrop,
+	DragAndDropObject,
+
 	Datatable,
 	determinePagination,
 	DatatableObject,
+	
 	PwAlert,
 	PwButton,
 	PwChart,
