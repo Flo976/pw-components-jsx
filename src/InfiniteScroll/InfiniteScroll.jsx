@@ -8,6 +8,7 @@ class InfiniteScroll {
                 if (!infinitescroll.ready) {
                     infinitescroll.ready = true
                     infinitescroll.InitScroll()
+                    infinitescroll.InitWheelScroll()
                     infinitescroll.load()
                 }
                 var { 

@@ -23,6 +23,7 @@ class InfiniteScrollObject {
     _defineProperty(this, "currentscrollHeight", 0);
   }
   load() {
+    let then = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : () => {};
     if (this.already_max) {
       return;
     }
@@ -64,6 +65,7 @@ class InfiniteScrollObject {
       }
       this.isLoading = false;
       this.waiting = false;
+      then();
       this.instance.refresh();
     });
   }
@@ -80,11 +82,24 @@ class InfiniteScrollObject {
     }
     return false;
   }
+  InitWheelScroll() {
+    var instance = this;
+    document.addEventListener("wheel", function (event) {
+      if (event.deltaY > 0 && !(document.body.scrollHeight > window.innerHeight) && !instance.waiting && instance.content.data.length > 0 && !instance.already_max) {
+        instance.waiting = true;
+        instance.instance.refresh();
+        instance.load(() => {
+          instance.waiting = false;
+        });
+      }
+    });
+  }
   InitScroll() {
     $(window).scroll(() => {
       var needLoad = this.isScrollVisible() && !this.waiting;
       if (needLoad) {
         this.waiting = true;
+        this.instance.refresh();
         this.load(() => {
           this.waiting = false;
         });

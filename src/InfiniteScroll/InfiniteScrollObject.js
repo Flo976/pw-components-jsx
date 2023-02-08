@@ -7,7 +7,7 @@ class InfiniteScrollObject {
 	url;
 	isLoading;
 	currentscrollHeight=0;
-	load() {
+	load(then=()=>{}) {
 		if (this.already_max) {
 			return;
 		}
@@ -49,6 +49,7 @@ class InfiniteScrollObject {
 			}
 			this.isLoading = false;
 			this.waiting = false;
+			then();
 			this.instance.refresh();
 		});
 	}
@@ -66,6 +67,25 @@ class InfiniteScrollObject {
         }
         return false;
     }
+	InitWheelScroll() {
+		var instance = this
+		document.addEventListener("wheel", function(event) {
+			if (
+				event.deltaY > 0 && 
+				!(document.body.scrollHeight > window.innerHeight) && 
+				!instance.waiting &&
+				instance.content.data.length > 0 && 
+				!instance.already_max
+			) {
+				instance.waiting = true;
+				instance.instance.refresh();
+
+				instance.load(() => {
+					instance.waiting = false;
+				})
+			}
+		});
+	}
 	InitScroll() {
         $(window).scroll(() => {
             var needLoad = (
@@ -75,6 +95,7 @@ class InfiniteScrollObject {
 
             if(needLoad){
                 this.waiting = true;
+				this.instance.refresh();
 
                 this.load(() => {
                     this.waiting = false;
