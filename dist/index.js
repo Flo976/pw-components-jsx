@@ -15,6 +15,12 @@ Object.defineProperty(exports, "AccordionObject", {
     return _AccordionObject.default;
   }
 });
+Object.defineProperty(exports, "Components", {
+  enumerable: true,
+  get: function get() {
+    return _Components.default;
+  }
+});
 Object.defineProperty(exports, "Datatable", {
   enumerable: true,
   get: function get() {
@@ -271,4 +277,5 @@ var _PwSpan = _interopRequireDefault(require("./core/PwSpan/PwSpan"));
 var _PwTable = _interopRequireDefault(require("./core/PwTable/PwTable"));
 var _PwTableDescription = _interopRequireDefault(require("./core/PwTableDescription/PwTableDescription"));
 var _PwTextarea = _interopRequireDefault(require("./core/PwTextarea/PwTextarea"));
+var _Components = _interopRequireDefault(require("./Components/Components"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

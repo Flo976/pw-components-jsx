@@ -43,6 +43,9 @@ import PwTable from "./core/PwTable/PwTable";
 import PwTableDescription from "./core/PwTableDescription/PwTableDescription";
 import PwTextarea from "./core/PwTextarea/PwTextarea";
 
+
+import Components from "./Components/Components";
+
 export {
 	Accordion,
     AccordionObject,
@@ -86,4 +89,6 @@ export {
 	PwTable,
 	PwTableDescription,
 	PwTextarea,
+
+	Components,
 }
