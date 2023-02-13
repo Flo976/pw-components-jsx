@@ -300,6 +300,63 @@ class Components {
             "click": button.handleValidation.bind(button)
           }
         }, [button.text])]);
+      },
+      $radio(field) {
+        let callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : () => {};
+        const h = this.$createElement;
+        this.$setupInstance([field]);
+        var id = (0, _pwComponentsCoreDev.idGenerator)();
+        setTimeout(() => {
+          var {
+            [id]: element
+          } = this.$refs;
+          callback({
+            element
+          });
+        }, 100);
+        var render = () => {
+          var options = field.options;
+          return options.map(option => {
+            return h("div", {
+              "class": "col-6"
+            }, [h("PwRadio", {
+              "attrs": {
+                "config": {
+                  name: field.name,
+                  label: option.label,
+                  value: option.value,
+                  valueChecked: field.value,
+                  onChange: params => {
+                    var {
+                      isChecked,
+                      input,
+                      event
+                    } = params;
+                    if (isChecked) {
+                      field.value = input.value;
+                      field.instance.refresh();
+                    }
+                    field.checkValidation.bind(field)(false);
+                  },
+                  params: {
+                    attrs: {
+                      "data-jid": field.id
+                    }
+                  }
+                }
+              }
+            })]);
+          });
+        };
+        return h("div", {
+          "class": "form-group"
+        }, [h("label", {
+          "class": "pw_input"
+        }, [field.label, h("div", {
+          "class": "row pt-2"
+        }, [render()])]), h("span", {
+          "class": (0, _classnames.default)("form_feedback_error", field.isValid ? "d-none" : "invalid-feedback d-block")
+        }, [field.errorMessage])]);
       }
     };
   }

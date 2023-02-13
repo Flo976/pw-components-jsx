@@ -294,6 +294,64 @@ class Components {
 					</div>
 				)
 			},
+			$radio(field, callback = () =>{}) {
+				this.$setupInstance([field])
+				var id = idGenerator();
+				setTimeout(() =>{
+					var {[id]:element} = this.$refs 
+					callback({element})
+				}, 100)
+				var render = () => {
+					var options = field.options;
+					return(
+						options.map((option) => {
+							return(
+								<div class="col-6">
+									<PwRadio config={{
+	                                  name: field.name,
+	                                  label: option.label,
+	                                  value: option.value,
+	                                  valueChecked: field.value,
+	                                  onChange: (params) => {
+	                                  	var { isChecked, input, event } = params
+	                                  	if(isChecked) {
+	                                  		field.value = input.value
+	                                  		field.instance.refresh()
+	                                  	} 
+	                                  	field.checkValidation.bind(field)(false)	                                  	
+	                                  },
+	                                  params: {
+								            attrs: {
+								                "data-jid":field.id
+								            },
+							        	},
+	                              	}} />
+	                            </div>
+							)
+						})
+					)
+				}
+				return (
+					<div class="form-group">
+						<label class="pw_input">
+							{field.label}
+							<div class="row pt-2">
+								{render()}
+							</div>
+						</label>
+						<span
+							class={classNames(
+								"form_feedback_error",
+								field.isValid
+									? "d-none"
+									: "invalid-feedback d-block"
+							)}
+						>
+							{field.errorMessage}
+						</span>
+					</div>
+				);
+			},
 		};
 	}
 }
