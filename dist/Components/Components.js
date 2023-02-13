@@ -10,6 +10,7 @@ var _Components = _interopRequireDefault(require("./Components.scss?module"));
 var _PwInput = _interopRequireDefault(require("../core/PwInput/PwInput"));
 var _PwSelect = _interopRequireDefault(require("../core/PwSelect/PwSelect"));
 var _PwButton = _interopRequireDefault(require("../core/PwButton/PwButton"));
+var _PwRadio = _interopRequireDefault(require("../core/PwRadio/PwRadio"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 class Components {
   static getMethods() {
@@ -319,7 +320,7 @@ class Components {
           return options.map(option => {
             return h("div", {
               "class": "col-6"
-            }, [h("PwRadio", {
+            }, [h(_PwRadio.default, {
               "attrs": {
                 "config": {
                   name: field.name,

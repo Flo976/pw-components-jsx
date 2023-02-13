@@ -4,6 +4,7 @@ import ComponentsStyle from "./Components.scss?module";
 import PwInput from "../core/PwInput/PwInput";
 import PwSelect from "../core/PwSelect/PwSelect";
 import PwButton from "../core/PwButton/PwButton";
+import PwRadio from "../core/PwRadio/PwRadio";
 
 class Components {
 	static getMethods() {
