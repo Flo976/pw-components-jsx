@@ -1,14 +1,15 @@
-import { C } from "../../vue/helper/V02Component";
-import styles from "./PwDatepicker.scss?module";
-import PwInput from "../PwInput/PwInput";
+import { C } from "vue/helper/V02Component.jsx";
 import classNames from "classnames";
-import { getData } from "pw-components-core-dev";
-import moment from "moment";
+import styles from "./PwDatepicker.scss?module";
+import { getData } from "tools/indexation/indexation.js";
 
 import "bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js";
 import "bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css";
 import "bootstrap-datepicker/dist/locales/bootstrap-datepicker.fr.min.js";
 
+import {PwInput} from "pw-components-jsx-dev";
+
+import moment from "moment";
 moment.locale("fr-ca");
 
 export default C.make({
@@ -23,7 +24,7 @@ export default C.make({
 			datepickerParams = {},
 			onChange = () => {},
 			onInit = () => {},
-			value
+			value,
 		} = $config;
 
 		var { input } = this.$refs;
@@ -102,10 +103,12 @@ export default C.make({
 
 		var {
 			format = "dd/mm/yyyy", 
+			label = ""
 		} = $config
 
 		return (
 			<label class="pw_datepicker">
+				{label}
 				<PwInput
 					ref="input"
 				    config={{

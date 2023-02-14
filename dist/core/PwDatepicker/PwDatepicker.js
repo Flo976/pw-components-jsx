@@ -7,15 +7,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 require("core-js/modules/es.symbol.description.js");
 require("core-js/modules/es.error.cause.js");
-var _V02Component = require("../../vue/helper/V02Component");
-var _PwDatepicker = _interopRequireDefault(require("./PwDatepicker.scss?module"));
-var _PwInput = _interopRequireDefault(require("../PwInput/PwInput"));
+var _V02Component = require("vue/helper/V02Component.jsx");
 var _classnames = _interopRequireDefault(require("classnames"));
-var _pwComponentsCoreDev = require("pw-components-core-dev");
-var _moment = _interopRequireDefault(require("moment"));
+var _PwDatepicker = _interopRequireDefault(require("./PwDatepicker.scss?module"));
+var _indexation = require("tools/indexation/indexation.js");
 require("bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js");
 require("bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css");
 require("bootstrap-datepicker/dist/locales/bootstrap-datepicker.fr.min.js");
+var _pwComponentsJsxDev = require("pw-components-jsx-dev");
+var _moment = _interopRequireDefault(require("moment"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -158,11 +158,12 @@ var _default = _V02Component.C.make({
       $config = {}
     } = this;
     var {
-      format = "dd/mm/yyyy"
+      format = "dd/mm/yyyy",
+      label = ""
     } = $config;
     return h("label", {
       "class": "pw_datepicker"
-    }, [h(_PwInput.default, {
+    }, [label, h(_pwComponentsJsxDev.PwInput, {
       "ref": "input",
       "attrs": {
         "config": _objectSpread({
