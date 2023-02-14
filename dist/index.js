@@ -231,6 +231,18 @@ Object.defineProperty(exports, "PwTextarea", {
     return _PwTextarea.default;
   }
 });
+Object.defineProperty(exports, "Tabs", {
+  enumerable: true,
+  get: function get() {
+    return _Tabs.default;
+  }
+});
+Object.defineProperty(exports, "TabsObject", {
+  enumerable: true,
+  get: function get() {
+    return _TabsObject.default;
+  }
+});
 Object.defineProperty(exports, "determinePagination", {
   enumerable: true,
   get: function get() {
@@ -247,6 +259,8 @@ var _DatatableObject = _interopRequireDefault(require("./Datatable/DatatableObje
 var _determinePagination = require("./Datatable/determinePagination");
 var _InfiniteScroll = _interopRequireDefault(require("./InfiniteScroll/InfiniteScroll"));
 var _InfiniteScrollObject = _interopRequireDefault(require("./InfiniteScroll/InfiniteScrollObject"));
+var _Tabs = _interopRequireDefault(require("./Tabs/Tabs"));
+var _TabsObject = _interopRequireDefault(require("./Tabs/TabsObject"));
 var _PwAlert = _interopRequireDefault(require("./core/PwAlert/PwAlert"));
 var _PwButton = _interopRequireDefault(require("./core/PwButton/PwButton"));
 var _PwChart = _interopRequireDefault(require("./core/PwChart/PwChart"));

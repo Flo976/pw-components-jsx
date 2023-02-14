@@ -12,6 +12,9 @@ import {determinePagination} from "./Datatable/determinePagination";
 import InfiniteScroll from "./InfiniteScroll/InfiniteScroll";
 import InfiniteScrollObject from "./InfiniteScroll/InfiniteScrollObject";
 
+import Tabs from "./Tabs/Tabs";
+import TabsObject from "./Tabs/TabsObject";
+
 import PwAlert from "./core/PwAlert/PwAlert";
 import PwButton from "./core/PwButton/PwButton";
 import PwChart from "./core/PwChart/PwChart";
@@ -59,6 +62,9 @@ export {
 	
 	InfiniteScroll,
 	InfiniteScrollObject,
+
+	Tabs,
+	TabsObject,
 	
 	PwAlert,
 	PwButton,
