@@ -1,5 +1,6 @@
 class AccordionObject {
     id = "";
+    key = "";
     cards = [];
     
     functions = {
