@@ -193,13 +193,13 @@ class DragAndDropHelper {
                 elt.innerHTML = e.dataTransfer.getData("text/html");
             }
 
-            this.$dragSrcEl = null;
-
             var params = {
                 event: e,
                 srcElt: this.$dragSrcEl,
                 destElt: elt,
             };
+
+            this.$dragSrcEl = null;
 
             this.getListener("onDrop")(params);
 
