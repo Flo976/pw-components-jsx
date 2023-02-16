@@ -15,6 +15,7 @@ import InfiniteScrollObject from "./InfiniteScroll/InfiniteScrollObject";
 import Tabs from "./Tabs/Tabs";
 import TabsObject from "./Tabs/TabsObject";
 
+import PwAddress from "./core/PwAddress/PwAddress";
 import PwAlert from "./core/PwAlert/PwAlert";
 import PwButton from "./core/PwButton/PwButton";
 import PwChart from "./core/PwChart/PwChart";
@@ -66,6 +67,7 @@ export {
 	Tabs,
 	TabsObject,
 	
+	PwAddress,
 	PwAlert,
 	PwButton,
 	PwChart,

@@ -63,6 +63,12 @@ Object.defineProperty(exports, "InfiniteScrollObject", {
     return _InfiniteScrollObject.default;
   }
 });
+Object.defineProperty(exports, "PwAddress", {
+  enumerable: true,
+  get: function get() {
+    return _PwAddress.default;
+  }
+});
 Object.defineProperty(exports, "PwAlert", {
   enumerable: true,
   get: function get() {
@@ -261,6 +267,7 @@ var _InfiniteScroll = _interopRequireDefault(require("./InfiniteScroll/InfiniteS
 var _InfiniteScrollObject = _interopRequireDefault(require("./InfiniteScroll/InfiniteScrollObject"));
 var _Tabs = _interopRequireDefault(require("./Tabs/Tabs"));
 var _TabsObject = _interopRequireDefault(require("./Tabs/TabsObject"));
+var _PwAddress = _interopRequireDefault(require("./core/PwAddress/PwAddress"));
 var _PwAlert = _interopRequireDefault(require("./core/PwAlert/PwAlert"));
 var _PwButton = _interopRequireDefault(require("./core/PwButton/PwButton"));
 var _PwChart = _interopRequireDefault(require("./core/PwChart/PwChart"));
