@@ -32,6 +32,7 @@ class Accordion {
         const h = this.$createElement;
         var {
           id,
+          key,
           cards = [],
           functions = {}
         } = accordion;
@@ -126,8 +127,12 @@ class Accordion {
               head = {},
               content = {}
             } = card;
+            var card_key = card.key;
             var head_id = head.id;
             var content_id = content.id;
+            if (!card_key) {
+              card_key = "card-".concat(card_index);
+            }
             if (!head_id) {
               head_id = "heading-".concat(card_index);
             }
@@ -142,7 +147,11 @@ class Accordion {
               content_id
             };
             return h("div", {
-              "class": "card"
+              "class": "card",
+              "key": card_key,
+              "attrs": {
+                "data-index": card_index
+              }
             }, [renderHead(params), renderContent(params)]);
           };
         }
@@ -150,11 +159,15 @@ class Accordion {
           render = function render() {
             let params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
             var {
+              cards = [],
               accordion_id,
-              cards = []
+              accordion_key
             } = params;
             if (!accordion_id || !accordion_id.length) {
               accordion_id = "accordion-".concat(Date.now());
+            }
+            if (!accordion_key || !accordion_key.length) {
+              accordion_key = "accordion-".concat(Date.now());
             }
             var cards = cards.map((card, i) => {
               params = {
@@ -167,7 +180,8 @@ class Accordion {
             return h("div", {
               "attrs": {
                 "id": accordion_id
-              }
+              },
+              "key": accordion_key
             }, [cards]);
           };
         }
@@ -178,8 +192,9 @@ class Accordion {
           render
         });
         return render({
+          cards,
           accordion_id: id,
-          cards
+          accordion_key: key
         });
       }
     };

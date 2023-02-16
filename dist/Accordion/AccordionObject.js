@@ -12,6 +12,7 @@ function _toPrimitive(input, hint) { if (typeof input !== "object" || input === 
 class AccordionObject {
   constructor() {
     _defineProperty(this, "id", "");
+    _defineProperty(this, "key", "");
     _defineProperty(this, "cards", []);
     _defineProperty(this, "functions", {
       renderHead: null,
