@@ -21,13 +21,22 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typ
 function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var prevPostalCode = null;
 var _default = _V02Component.C.make({
+  setAddressJson(addressJSon) {
+    this.getData().addressJson = addressJSon;
+  },
+  getAddressJson() {
+    return this.getData().addressJson;
+  },
   initData() {
     var {
       $config
     } = this;
     var {
       onInit = () => {},
-      params = {}
+      params = {},
+      country = [],
+      onChange = () => {},
+      onError = () => {}
     } = $config;
     var {
       attrs = {}
@@ -37,17 +46,86 @@ var _default = _V02Component.C.make({
     } = attrs;
     if (elementId) {
       var input = document.getElementById(elementId);
-      var searchBox = new google.maps.places.SearchBox(input);
-      searchBox.addListener("places_changed", () => {
-        var places = searchBox.getPlaces();
-        if (places.length == 0) {
+      var searchBox = new google.maps.places.Autocomplete(input);
+      if (country && country.length > 0) {
+        searchBox.setComponentRestrictions({
+          country: country
+        });
+      }
+      searchBox.addListener("place_changed", () => {
+        var addressJSon = {};
+        var checkZipcode = false;
+        var ville = "";
+        var zipcode = "";
+        var street_number = "";
+        var places = [searchBox.getPlace()];
+        if (!places || places.length == 0) {
           return;
         }
-        places.forEach(place => {
-          if (!place.geometry || !place.geometry.location) {
+        if (places[0] && places[0].address_components) {
+          for (var i = 0; i < places[0].address_components.length; i++) {
+            for (var j = 0; j < places[0].address_components[i].types.length; j++) {
+              if (places[0].address_components[i].types[j] == "postal_code") {
+                checkZipcode = true;
+              }
+            }
+          }
+        }
+        this.getData().valid = true;
+        if (!checkZipcode) {
+          this.getData().valid = false;
+          this.setAddressJson({});
+          onChange({
+            instance: this
+          });
+          onError({
+            instance: this
+          });
+          return false;
+        }
+        places.map(place => {
+          if (place.geometry === undefined) {
             return;
           }
+          var address_components = place.address_components;
+          for (var i = 0; i < address_components.length; i++) {
+            for (var j = 0; j < address_components[i].types.length; j++) {
+              if (address_components[i].types[j] == "postal_code") {
+                zipcode = address_components[i].long_name;
+              }
+              if (address_components[i].types[j] == "street_number") {
+                street_number = address_components[i].long_name;
+              }
+            }
+          }
+
+          //Selection informations villes
+          var locality = (0, _map.getParamMap)(address_components, "locality");
+          var administrative_area_level_1 = (0, _map.getParamMap)(address_components, "administrative_area_level_1");
+          var administrative_area_level_2 = (0, _map.getParamMap)(address_components, "administrative_area_level_2");
+          var country = (0, _map.getParamMap)(address_components, "country");
+          var route = (0, _map.getParamMap)(address_components, "route");
+          ville = (0, _map.getVille)(place, locality, administrative_area_level_1, administrative_area_level_2);
+          addressJSon["street_number"] = street_number;
+          addressJSon["zipcode"] = zipcode;
+          addressJSon["v2_map"] = true;
+          addressJSon["city"] = ville;
+          addressJSon["locality"] = locality;
+          addressJSon["administrative_area_level_1"] = administrative_area_level_1;
+          addressJSon["administrative_area_level_2"] = administrative_area_level_2;
+          addressJSon["country"] = country;
+          addressJSon["route"] = route;
+          addressJSon["lat"] = place.geometry["location"].lat();
+          addressJSon["lng"] = place.geometry["location"].lng();
+          addressJSon["formatted_address"] = place.formatted_address;
+          addressJSon["is_from_map"] = true;
         });
+        this.setAddressJson(addressJSon);
+        setTimeout(() => {
+          onChange({
+            instance: this
+          });
+        }, 100);
       });
       this.getData().searchBox = searchBox;
       onInit(this);
@@ -78,12 +156,14 @@ var _default = _V02Component.C.make({
       citiesParams = {},
       zipCodeParams = {},
       addressTextParams = {},
-      label = "",
+      label: _label = "",
       citiesOptions = [],
-      customAddressText = "L'adresse n'est pas reconnue"
+      customAddressText = "L'adresse n'est pas reconnue",
+      onChange = () => {},
+      onError = () => {}
     } = $config;
     var {
-      label: cityLabel = ""
+      label: _cityLabel = ""
     } = citiesParams;
     var {
       label: addressLabel = ""
@@ -92,6 +172,25 @@ var _default = _V02Component.C.make({
       label: zipCodeLabel = ""
     } = zipCodeParams;
     var idAddressText = (0, _pwComponentsCoreDev.idGenerator)();
+    var callBackCity = result => {
+      if (result) {
+        this.config.city = result;
+        this.update();
+        customSetAddressJson();
+      }
+    };
+    var customSetAddressJson = () => {
+      var full_address = this.config.addressText;
+      var postal_code = this.config.zipcode;
+      var city = this.config.city;
+      if (city) {
+        var format_rp = (0, _map.getFullAdress)(city, postal_code, full_address);
+        this.setAddressJson(format_rp);
+        this.update();
+      } else {
+        this.setAddressJson({});
+      }
+    };
     var sendRequestCity = (city, postal_code, isNotChange) => {
       var address = "".concat(city, "\" \"").concat(postal_code);
       var params = {
@@ -100,7 +199,7 @@ var _default = _V02Component.C.make({
       if (!isNotChange) {
         this.toogleLoading(true);
       }
-      (0, _map.getCity)(params, this.callBackCity);
+      (0, _map.getCity)(params, callBackCity);
     };
     var callBackPostalCode = cities => {
       var full_address = $(".form_edit_info.full_address").val();
@@ -123,6 +222,17 @@ var _default = _V02Component.C.make({
         }
       }
     };
+    var changeAddressText = event => {
+      var {
+        currentTarget: event
+      } = event;
+      var {
+        value
+      } = event;
+      this.config.addressText = value;
+      this.refresh();
+      customSetAddressJson();
+    };
     var loadCity = event => {
       var currentTarget = event.currentTarget;
       var currentValue = currentTarget.value;
@@ -141,20 +251,98 @@ var _default = _V02Component.C.make({
           (0, _map.initLocality)(".form_edit_info.locality");
           (0, _map.getZipCode)(params, callBackPostalCode);
         } else if (!currentValue || !(0, _map.isFullZipCode)(currentValue)) {
-          (0, _map.setAdressJson)({});
+          this.setAddressJson({});
           prevPostalCode = null;
           $(".form_edit_info.locality").val("");
           $(".form_edit_info.locality").html('');
         }
-        this.config.messageError = null;
-        this.update();
+        this.config.zipcode = currentValue;
+        this.refresh();
+        customSetAddressJson();
       }, 500);
     };
     var customAddressFields = () => {
       var {
-        isCustomAddress = false
+        isCustomAddress = false,
+        customAddressElements = () => {
+          return {};
+        },
+        country
       } = this.config;
-      if (isCustomAddress) {
+      var elements = {
+        fullAddressInput: () => {
+          return h(_pwComponentsJsxDev.PwInput, {
+            "ref": idAddressText,
+            "attrs": {
+              "config": _objectSpread(_objectSpread({
+                type: "text"
+              }, addressTextParams), {}, {
+                isDirect: true,
+                onChange: changeAddressText
+              })
+            }
+          });
+        },
+        fullAddressLabel: () => {
+          return addressLabel;
+        },
+        fullAddressElement: () => {
+          return h("div", {
+            "class": "col-md-12"
+          }, [h("label", {
+            "class": "form-check-label _custom_label"
+          }, [elements.fullAddressLabel(), elements.fullAddressInput()])]);
+        },
+        zipcodeInput: () => {
+          return h("input", {
+            "attrs": {
+              "type": "text",
+              "placeholder": "Code postal"
+            },
+            "class": "pw_input custom_input postal_code",
+            "on": {
+              "change": loadCity,
+              "click": loadCity,
+              "input": loadCity
+            }
+          });
+        },
+        zipcodeLabel: () => {
+          return zipCodeLabel;
+        },
+        zipCodeElement: () => {
+          return h("label", {
+            "class": "form-check-label _custom_label pw_input"
+          }, [elements.zipcodeLabel(), elements.zipcodeInput()]);
+        },
+        cityInput: () => {
+          return h(_pwComponentsJsxDev.PwSelect, {
+            "attrs": {
+              "config": _objectSpread({
+                options: citiesOptions
+              }, citiesParams)
+            }
+          });
+        },
+        cityLabel: () => {
+          return _cityLabel;
+        },
+        cityElement: () => {
+          return h("label", {
+            "class": "pw_input"
+          }, [elements.cityLabel(), elements.cityInput()]);
+        }
+      };
+      var getElements = () => {
+        return _objectSpread(_objectSpread({}, elements), customAddressElements({
+          elements,
+          instance: this,
+          showCustomAddress,
+          customAddressText
+        }));
+      };
+      var render = () => {
+        var elements = getElements();
         return h("div", {
           "attrs": {
             "id": "google-analayze-complete"
@@ -162,82 +350,88 @@ var _default = _V02Component.C.make({
           "class": "custom_inputs google-analayze-complete modal_custom_group mx-auto"
         }, [h("div", {
           "class": "row _full_input_adress"
-        }, [h("div", {
-          "class": "col-md-12"
-        }, [h("label", {
-          "class": "form-check-label _custom_label"
-        }, [addressLabel, h(_pwComponentsJsxDev.PwInput, {
-          "ref": idAddressText,
-          "attrs": {
-            "config": _objectSpread({
-              type: "text"
-            }, addressTextParams)
-          }
-        })])]), h("div", {
+        }, [elements.fullAddressElement(), h("div", {
           "class": "col-md-12"
         }, [h("div", {
           "class": "row zip_code_city"
         }, [h("div", {
           "class": "col-md-6"
-        }, [h("label", {
-          "class": "form-check-label _custom_label pw_input"
-        }, [zipCodeLabel, h("input", {
-          "attrs": {
-            "type": "text",
-            "placeholder": "Code postal"
-          },
-          "class": "custom_input postal_code pw_input",
-          "on": {
-            "change": loadCity,
-            "click": loadCity,
-            "input": loadCity
-          }
-        })])]), h("div", {
+        }, [elements.zipCodeElement()]), h("div", {
           "class": "col-md-6"
-        }, [h("label", {
-          "class": "pw_input"
-        }, [cityLabel, h(_pwComponentsJsxDev.PwSelect, {
-          "attrs": {
-            "config": _objectSpread({
-              options: citiesOptions
-            }, citiesParams)
-          }
-        })])]), h("p", {
-          "attrs": {
-            "id": "search_map_error_manuel"
-          },
-          "ref": "search_map_error_manuel"
-        }, [h("span", {
-          "class": "text-danger d-none"
-        })])])])])]);
+        }, [elements.cityElement()])])])])]);
+      };
+      if (isCustomAddress) {
+        return render();
       }
     };
     var mapAddressFields = () => {
       var {
-        isCustomAddress = false
+        isCustomAddress = false,
+        params = {},
+        customElements = () => {
+          return {};
+        }
       } = this.config;
+      var {
+        attrs = {}
+      } = params;
+      var {
+        id: elementId
+      } = attrs;
+      var elements = {
+        input: () => {
+          return h(_pwComponentsJsxDev.PwInput, {
+            "ref": "input",
+            "attrs": {
+              "config": _objectSpread(_objectSpread({
+                isDirect: true
+              }, $config), {}, {
+                onChange: () => {},
+                onError: () => {}
+              })
+            }
+          });
+        },
+        label: () => {
+          return _label;
+        },
+        custom: () => {
+          return h("p", {
+            "class": "stl-info_address",
+            "on": {
+              "click": showCustomAddress
+            }
+          }, [h("a", {
+            "attrs": {
+              "href": "#"
+            }
+          }, [customAddressText])]);
+        },
+        pwInput: () => {
+          return h("label", {
+            "class": "pw_input"
+          }, [elements.label(), elements.input()]);
+        }
+      };
+      var getElements = () => {
+        return _objectSpread(_objectSpread({}, elements), customElements({
+          elements,
+          instance: this,
+          showCustomAddress,
+          customAddressText
+        }));
+      };
+      var render = () => {
+        var elements = getElements();
+        return h("div", [elements.pwInput(), elements.custom()]);
+      };
       if (!isCustomAddress) {
-        return h("div", [h("label", {
-          "class": "pw_input"
-        }, [label, h(_pwComponentsJsxDev.PwInput, {
-          "ref": "input",
-          "attrs": {
-            "config": _objectSpread({}, $config)
-          }
-        })]), h("p", {
-          "class": "stl-info_address",
-          "on": {
-            "click": showCustomAddress
-          }
-        }, [h("a", {
-          "attrs": {
-            "href": "#"
-          }
-        }, [customAddressText])])]);
+        return render();
       }
     };
     var showCustomAddress = () => {
       this.config.isCustomAddress = true;
+      this.getData().isValid = false;
       this.refresh();
     };
     return h("div", (0, _babelHelperVueJsxMergeProps.default)([{
