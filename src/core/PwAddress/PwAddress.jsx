@@ -1,4 +1,4 @@
-import { C } from "vue/helper/V02Component.jsx";
+import { C } from "../../vue/helper/V02Component";
 import classNames from "classnames";
 import {PwInput} from "pw-components-jsx-dev";
 import { PwSelect } from "pw-components-jsx-dev";

@@ -150,9 +150,38 @@ class Datatable {
                     render = datatable.render;
                 }
                 var pagination = () => {
-                    var { pagination, body = {}, activePage = 1 } = datatable;
-                    if (!pagination || !body.total) {
-                        return null;
+                    var renderPage = ({page, dot, active, onClick, classNames:cls}) => {
+                        return (
+                            <li
+                                class={classNames(cls, dot, active)}
+                                onClick={onClick}
+                            >
+                                <a class="page-link" href="#">
+                                    {page}
+                                </a>
+                            </li>
+                        )
+                    };
+                    var renderButtons = ({prev, next, disabled, onClick, classNames:cls}) => {
+                        var text = prev ? "Précédent" : "Suivant";
+                        return (
+                            <li
+								class={classNames(cls, disabled)}
+								onClick={onClick}
+							>
+								<a class="page-link" href="#">
+									<span>{text}</span>
+								</a>
+							</li>
+                        )
+                    };
+
+                    if (datatable && typeof datatable.renderPage == "function") {
+                        renderPage = datatable.renderPage;
+                    }
+
+                    if (datatable && typeof datatable.renderButtons == "function") {
+                        renderButtons = datatable.renderButtons;
                     }
 
 					var {total} = body;
@@ -188,30 +217,19 @@ class Datatable {
                                 datatable.action.goToPage(pageToGo)
                             };
                             if (typeof page == "object") {
-                                result.push(
-                                    <li
-										class="paginate_button page-item"
-										onClick={change}
-									>
-										<a class="page-link" href="#">
-											...
-										</a>
-									</li>
-                                );
+                                result.push(renderPage({
+                                    page: "...", 
+                                    active: "", 
+                                    onClick: change,
+                                    classNames: "page-item paginate_button"
+                                }));
                             } else {
-                                result.push(
-                                    <li
-										class={classNames(
-											"page-item",
-											active()
-										)}
-										onClick={change}
-									>
-										<a class="page-link" href="#">
-											{page}
-										</a>
-									</li>
-                                );
+                                result.push(renderPage({
+                                    page: page, 
+                                    active: active(), 
+                                    onClick: change,
+                                    classNames: "page-item",
+                                }));
                             }
                         });
                         return result;
@@ -230,19 +248,14 @@ class Datatable {
                             }
                             datatable.action.goToPage(activePage - 1);
                         }
-                        return (
-                            <li
-								class={classNames(
-									"paginate_button page-item previous",
-									could() ? "" : "disabled"
-								)}
-								onClick={action}
-							>
-								<a class="page-link" href="#">
-									<span>Précédent</span>
-								</a>
-							</li>
-                        )
+                        return renderButtons({
+                            prev: true, 
+                            next: false, 
+                            disabled: could() ? "" : "disabled", 
+                            isDisabled: !could(), 
+                            onClick: action, 
+                            classNames: "paginate_button page-item prev",
+                        });
                     }
 
                     var renderNext = () => {
@@ -258,27 +271,22 @@ class Datatable {
                             }
                             datatable.action.goToPage(activePage + 1);
                         }
-                        return (
-                            <li
-								class={classNames(
-									"paginate_button page-item previous",
-									could() ? "" : "disabled"
-								)}
-								onClick={action}
-							>
-								<a class="page-link" href="#">
-									<span>Suivant</span>
-								</a>
-							</li>
-                        )
+                        return renderButtons({
+                            prev: false, 
+                            next: true, 
+                            disabled: could() ? "" : "disabled", 
+                            isDisabled: !could(), 
+                            onClick: action, 
+                            classNames: "paginate_button page-item next",
+                        });
                     }
 
                     return (
                         <div class="row">
-							<div class="col-6">
-								<div>Affichage de la page 1 sur 2</div>
+							<div class="col-6 pagination_recap">
+								<div>Affichage de la page {activePage} sur 2</div>
 							</div>
-							<div class="col-6">
+							<div class="col-6 pagination_content">
 								<nav aria-label="...">
 									<ul class="pagination">
 										{renderPrev()}

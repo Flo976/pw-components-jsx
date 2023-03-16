@@ -8,7 +8,7 @@ exports.default = void 0;
 require("core-js/modules/es.symbol.description.js");
 require("core-js/modules/es.error.cause.js");
 var _babelHelperVueJsxMergeProps = _interopRequireDefault(require("@vue/babel-helper-vue-jsx-merge-props"));
-var _V02Component = require("vue/helper/V02Component.jsx");
+var _V02Component = require("../../vue/helper/V02Component");
 var _classnames = _interopRequireDefault(require("classnames"));
 var _pwComponentsJsxDev = require("pw-components-jsx-dev");
 var _pwComponentsCoreDev = require("pw-components-core-dev");

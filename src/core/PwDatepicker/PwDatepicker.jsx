@@ -1,7 +1,7 @@
-import { C } from "vue/helper/V02Component.jsx";
+import { C } from "../../vue/helper/V02Component";
 import classNames from "classnames";
 import styles from "./PwDatepicker.scss?module";
-import { getData } from "tools/indexation/indexation.js";
+import { getData } from "../../tools/indexation/indexation.js";
 
 import "bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js";
 import "bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css";
