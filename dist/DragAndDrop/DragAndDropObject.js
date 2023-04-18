@@ -84,13 +84,15 @@ class DragAndDropHelper {
     } = this.$dragAndDrop;
     this.$items = document.querySelectorAll("".concat(parentSelector, " ").concat(itemsSelector));
     this.$items.forEach(item => {
+      item.setAttribute("draggable", true);
       item.addEventListener("dragstart", this.$handleDragStart());
       item.addEventListener("dragover", this.$handleDragOver());
       item.addEventListener("dragenter", this.$handleDragEnter());
       item.addEventListener("dragleave", this.$handleDragLeave());
       item.addEventListener("dragend", this.$handleDragEnd());
       item.addEventListener("drop", this.$handleDrop());
-      item.setAttribute("draggable", true);
+      item.querySelector(".card-body").setAttribute("draggable", true);
+      item.querySelector(".card-body").setAttribute("ondragstart", "event.preventDefault()");
     });
   }
   getElement(event) {
@@ -159,6 +161,9 @@ class DragAndDropHelper {
   }
   $handleDragEnter() {
     return e => {
+      this.$items.forEach(function (item) {
+        item.classList.remove("over");
+      });
       var elt = this.getElement(e);
       elt.classList.add("over");
       var params = {
@@ -172,7 +177,8 @@ class DragAndDropHelper {
   $handleDragLeave() {
     return e => {
       var elt = this.getElement(e);
-      elt.classList.remove("over");
+      // elt.classList.remove("over");
+
       var params = {
         event: e,
         srcElt: this.$dragSrcEl,

@@ -188,13 +188,52 @@ class Datatable {
           render = datatable.render;
         }
         var pagination = () => {
-          var {
-            pagination,
-            body = {},
-            activePage = 1
-          } = datatable;
-          if (!pagination || !body.total) {
-            return null;
+          var renderPage = _ref4 => {
+            let {
+              page,
+              dot,
+              active,
+              onClick,
+              classNames: cls
+            } = _ref4;
+            return h("li", {
+              "class": (0, _classnames.default)(cls, dot, active),
+              "on": {
+                "click": onClick
+              }
+            }, [h("a", {
+              "class": "page-link",
+              "attrs": {
+                "href": "#"
+              }
+            }, [page])]);
+          };
+          var renderButtons = _ref5 => {
+            let {
+              prev,
+              next,
+              disabled,
+              onClick,
+              classNames: cls
+            } = _ref5;
+            var text = prev ? "Précédent" : "Suivant";
+            return h("li", {
+              "class": (0, _classnames.default)(cls, disabled),
+              "on": {
+                "click": onClick
+              }
+            }, [h("a", {
+              "class": "page-link",
+              "attrs": {
+                "href": "#"
+              }
+            }, [h("span", [text])])]);
+          };
+          if (datatable && typeof datatable.renderPage == "function") {
+            renderPage = datatable.renderPage;
+          }
+          if (datatable && typeof datatable.renderButtons == "function") {
+            renderButtons = datatable.renderButtons;
           }
           var {
             total
@@ -225,29 +264,19 @@ class Datatable {
                 datatable.action.goToPage(pageToGo);
               };
               if (typeof page == "object") {
-                result.push(h("li", {
-                  "class": "paginate_button page-item",
-                  "on": {
-                    "click": change
-                  }
-                }, [h("a", {
-                  "class": "page-link",
-                  "attrs": {
-                    "href": "#"
-                  }
-                }, ["..."])]));
+                result.push(renderPage({
+                  page: "...",
+                  active: "",
+                  onClick: change,
+                  classNames: "page-item paginate_button"
+                }));
               } else {
-                result.push(h("li", {
-                  "class": (0, _classnames.default)("page-item", active()),
-                  "on": {
-                    "click": change
-                  }
-                }, [h("a", {
-                  "class": "page-link",
-                  "attrs": {
-                    "href": "#"
-                  }
-                }, [page])]));
+                result.push(renderPage({
+                  page: page,
+                  active: active(),
+                  onClick: change,
+                  classNames: "page-item"
+                }));
               }
             });
             return result;
@@ -265,17 +294,14 @@ class Datatable {
               }
               datatable.action.goToPage(activePage - 1);
             };
-            return h("li", {
-              "class": (0, _classnames.default)("paginate_button page-item previous", could() ? "" : "disabled"),
-              "on": {
-                "click": action
-              }
-            }, [h("a", {
-              "class": "page-link",
-              "attrs": {
-                "href": "#"
-              }
-            }, [h("span", ["Pr\xE9c\xE9dent"])])]);
+            return renderButtons({
+              prev: true,
+              next: false,
+              disabled: could() ? "" : "disabled",
+              isDisabled: !could(),
+              onClick: action,
+              classNames: "paginate_button page-item prev"
+            });
           };
           var renderNext = () => {
             var could = () => {
@@ -290,24 +316,21 @@ class Datatable {
               }
               datatable.action.goToPage(activePage + 1);
             };
-            return h("li", {
-              "class": (0, _classnames.default)("paginate_button page-item previous", could() ? "" : "disabled"),
-              "on": {
-                "click": action
-              }
-            }, [h("a", {
-              "class": "page-link",
-              "attrs": {
-                "href": "#"
-              }
-            }, [h("span", ["Suivant"])])]);
+            return renderButtons({
+              prev: false,
+              next: true,
+              disabled: could() ? "" : "disabled",
+              isDisabled: !could(),
+              onClick: action,
+              classNames: "paginate_button page-item next"
+            });
           };
           return h("div", {
             "class": "row"
           }, [h("div", {
-            "class": "col-6"
-          }, [h("div", ["Affichage de la page 1 sur 2"])]), h("div", {
-            "class": "col-6"
+            "class": "col-6 pagination_recap"
+          }, [h("div", ["Affichage de la page ", activePage, " sur 2"])]), h("div", {
+            "class": "col-6 pagination_content"
           }, [h("nav", {
             "attrs": {
               "aria-label": "..."
