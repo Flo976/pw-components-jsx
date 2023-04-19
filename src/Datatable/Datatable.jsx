@@ -150,6 +150,11 @@ class Datatable {
                     render = datatable.render;
                 }
                 var pagination = () => {
+                    var { pagination, body = {}, activePage = 1 } = datatable;
+                    if (!pagination || !body.total) {
+                        return null;
+                    }
+                    
                     var renderPage = ({page, dot, active, onClick, classNames:cls}) => {
                         return (
                             <li
