@@ -91,8 +91,10 @@ class DragAndDropHelper {
       item.addEventListener("dragleave", this.$handleDragLeave());
       item.addEventListener("dragend", this.$handleDragEnd());
       item.addEventListener("drop", this.$handleDrop());
-      item.querySelector(".card-body").setAttribute("draggable", true);
-      item.querySelector(".card-body").setAttribute("ondragstart", "event.preventDefault()");
+      item.querySelectorAll(".no-drag").forEach(noDrag => {
+        noDrag.setAttribute("draggable", true);
+        noDrag.setAttribute("ondragstart", "event.preventDefault()");
+      });
     });
   }
   getElement(event) {

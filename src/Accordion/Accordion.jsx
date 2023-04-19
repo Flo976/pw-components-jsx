@@ -58,7 +58,7 @@ class Accordion {
 	
 						return (
 							<div class="card-header" id={head_id}>
-								<a href="#" class="btn btn-link" data-toggle="collapse" data-target={`#${content_id}`} aria-controls={content_id}>
+								<a href="#" class="card-toggle no-drag btn btn-link" data-toggle="collapse" data-target={`#${content_id}`} aria-controls={content_id}>
 									{renderLocal()}
 								</a>
 							</div>
@@ -91,7 +91,7 @@ class Accordion {
 						
 						return (
 							<div id={content_id} class="collapse" aria-labelledby={`#${head_id}`} data-parent={`#${accordion_id}`}>
-								<div class="card-body">
+								<div class="card-body no-drag">
 									{renderLocal()}
 								</div>
 							</div>

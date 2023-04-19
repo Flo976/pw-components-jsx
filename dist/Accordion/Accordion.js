@@ -78,7 +78,7 @@ class Accordion {
                 "data-target": "#".concat(content_id),
                 "aria-controls": content_id
               },
-              "class": "btn btn-link"
+              "class": "card-toggle no-drag btn btn-link"
             }, [renderLocal()])]);
           };
         }
@@ -111,7 +111,7 @@ class Accordion {
               },
               "class": "collapse"
             }, [h("div", {
-              "class": "card-body"
+              "class": "card-body no-drag"
             }, [renderLocal()])]);
           };
         }
