@@ -188,6 +188,14 @@ class Datatable {
           render = datatable.render;
         }
         var pagination = () => {
+          var {
+            pagination,
+            body = {},
+            activePage = 1
+          } = datatable;
+          if (!pagination || !body.total) {
+            return null;
+          }
           var renderPage = _ref4 => {
             let {
               page,
